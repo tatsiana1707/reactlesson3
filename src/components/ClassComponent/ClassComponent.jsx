@@ -19,9 +19,18 @@ export class ClassComponent extends React.Component {
     e.preventDefault();
 
     this.setState(state => {
-      this.setState(state => ({
-        count: state.count + 1,
-      }));
+      if (state.userNumber < 1 || state.userNumber > 10) {
+        return {
+          result: `Введите число от ${this.props.min} до ${this.props.max}`,
+          text: 'Угадать',
+          userNumber: '',
+          disabled: false,
+        };
+      } else {
+        this.setState(state => ({
+          count: state.count + 1,
+        }));
+      }
 
       this.setState(state => {
         if (!state.userNumber) {
@@ -29,16 +38,6 @@ export class ClassComponent extends React.Component {
             result: `Введите число от ${this.props.min} до ${this.props.max}`,
             count: 0,
             text: 'Угадать',
-            disabled: false,
-          };
-        }
-
-        if (state.userNumber < 1 || state.userNumber > 10) {
-          return {
-            result: `Введите число от ${this.props.min} до ${this.props.max}`,
-            count: 0,
-            text: 'Угадать',
-            userNumber: '',
             disabled: false,
           };
         }
