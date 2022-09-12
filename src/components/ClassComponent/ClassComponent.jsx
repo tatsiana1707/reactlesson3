@@ -62,6 +62,9 @@ export class ClassComponent extends React.Component {
           попыток ${state.count}`,
           userNumber: '',
           text: 'Сыграть еще...',
+          randomNumber:
+            Math.floor(Math.random() * this.props.max - this.props.min) +
+            this.props.min,
           disabled: true,
           count: 0,
         };
