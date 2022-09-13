@@ -7,70 +7,67 @@ export class ClassComponent extends React.Component {
     result: `Загадано число от ${this.props.min} до ${this.props.max}`,
     userNumber: '',
     randomNumber:
-    Math.floor(Math.random() * this.props.max - this.props.min) +
+    Math.floor(Math.random() * (this.props.max - this.props.min + 1)) +
       this.props.min,
-    count: 0,
     text: 'Угадать',
+    count: 0,
     disabled: false,
   };
-
 
   handleSubmit = (e) => {
     e.preventDefault();
 
+
     this.setState(state => {
-      if (state.userNumber < 1 || state.userNumber > 10) {
-        return {
-          result: `Введите число от ${this.props.min} до ${this.props.max}`,
-          text: 'Угадать',
-          userNumber: '',
-          disabled: false,
-        };
-      } else {
-        this.setState(state => ({
-          count: state.count + 1,
-        }));
-      }
+      console.log(state, state.userNumber, typeof(state.count),
+        'state');
 
-      this.setState(state => {
-        if (!state.userNumber) {
+      let num = state.count;
+
+      if (!this.state.disabled) {
+        if (!+state.userNumber ||
+          +state.userNumber < 1 ||
+          +state.userNumber > 10) {
           return {
-            result: `Введите число от ${this.props.min} до ${this.props.max}`,
-            count: 0,
-            text: 'Угадать',
-            disabled: false,
+            userNumber: '',
+            result: `Введите число от ${this.props.min} до ${this.props.max}`
           };
-        }
-
-        if (state.userNumber > state.randomNumber) {
+        } else if (+state.userNumber > state.randomNumber) {
+          num++;
           return {
             result: `${state.userNumber} больше загаданного`,
             userNumber: '',
+            count: num,
           };
-        }
-
-        if (state.userNumber < state.randomNumber) {
+        } else if (+state.userNumber < state.randomNumber) {
+          num++;
           return {
             result: `${state.userNumber} меньше загаданного`,
             userNumber: '',
+            count: num,
+          };
+        } else {
+          return {
+            result: `Вы угадали, загаданное число ${this.state.userNumber},
+              попыток ${state.count + 1}`,
+            userNumber: '',
+            text: 'Сыграть еще...',
+            randomNumber:
+              Math.floor(Math.random() * this.props.max - this.props.min) +
+              this.props.min,
+            count: 0,
+            disabled: true,
           };
         }
+      }
 
-        return {
-          result: `Вы угадали, загаданное число ${state.userNumber},
-          попыток ${state.count}`,
-          userNumber: '',
-          text: 'Сыграть еще...',
-          randomNumber:
-            Math.floor(Math.random() * this.props.max - this.props.min) +
-            this.props.min,
-          disabled: true,
-          count: 0,
-        };
-      });
+      return {
+        result: `Загадано число от ${this.props.min} до ${this.props.max}`,
+        disabled: false,
+        text: 'Угадать',
+      };
     });
   };
-
 
   handleChange = (e) => {
     this.setState((state, props) => {
@@ -102,6 +99,7 @@ export class ClassComponent extends React.Component {
     );
   }
 }
+
 
 ClassComponent.propTypes = {
   min: PropTypes.number,
