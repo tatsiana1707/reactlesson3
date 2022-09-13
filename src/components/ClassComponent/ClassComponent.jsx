@@ -49,7 +49,7 @@ export class ClassComponent extends React.Component {
         } else {
           return {
             result: `Вы угадали, загаданное число ${this.state.userNumber},
-              попыток ${state.count + 1}`,
+              попыток ${num + 1}`,
             userNumber: '',
             text: 'Сыграть еще...',
             randomNumber:
